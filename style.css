@@ -109,3 +109,6 @@ h1.t-title{font-size:26px;line-height:1.3;color:var(--ink);font-weight:700;margi
   h1.t-title,h1.idx-title{font-size:22px}
   .cols{flex-direction:column}
 }
+
+/* Korean/other fallback chars inside MathJax SVG <text>: use page font, not bare serif */
+.mjx text, .mjx-display text { font-family: inherit; }
