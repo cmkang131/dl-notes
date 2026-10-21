@@ -24,7 +24,7 @@
     
     </section>
     <section class="part">
-    <h2 class="sec-h">Alternative : Incremental update(점진적 업데이트)</h2>
+    <h2 class="sec-h">Alternative : Incremental update</h2>
     <div class="figwrap"><img src="img/lec7-01.webp" alt="" loading="lazy"></div>
 <ul>
 <li>각 점마다, 따로 <b class="k-blue">training</b> 해감.
@@ -68,7 +68,7 @@
 </li>
 </ul>
 </li>
-<li>Batch : 전체 평균(계산은 전체, 평균값 1번 반환)만큼 GD를(한 번) 하게 됨.<br>SGD(확률적 경사 하강법) : 한 점을 여러번(전체만큼) GD하게 됨.
+<li>Batch : 전체 평균(계산은 전체, 평균값 1번 반환)만큼 GD를(한 번) 하게 됨.<br>SGD : 한 점을 여러번(전체만큼) GD하게 됨.
 <ul>
 <li>→ SGD는 Batch와 같은 연산량으로 여러번 업데이트를 하게 됨.
 </li>
@@ -111,14 +111,14 @@
 <div class="figwrap"><img src="img/lec7-12.webp" alt="" loading="lazy"></div>
 </div>
 </div>
-<h3>Learning late를 줄여가면서 학습하면 됨.→ 그러면 어느 선으로 수렴하게 됨.</h3>
+<h3>Learning rate를 줄여가면서 학습하면 됨.→ 그러면 어느 선으로 수렴하게 됨.</h3>
 <div class="figwrap"><img src="img/lec7-13.webp" alt="" loading="lazy"></div>
     </section>
     <section class="part">
     <div class="warn"><b class="k-blue">SGD convergence </b>(SGD 수렴 조건)</div>
 <div class="figwrap"><img src="img/lec7-14.webp" alt="" loading="lazy"></div>
 <ul>
-<li>SGD는 확률적인 Gradient를 사용하므로 노이즈가 발생한다. 따라서 <b class="k-blue">학습률(Learning Rate(학습률))을 적절히 감소시켜야 수렴을 보장</b>할 수 있다.
+<li>SGD는 확률적인 Gradient를 사용하므로 노이즈가 발생한다. 따라서 <b class="k-blue">학습률(Learning Rate)을 적절히 감소시켜야 수렴을 보장</b>할 수 있다.
 </li>
 </ul>
 <h3>1. Robbins-Monro Conditions</h3>
@@ -169,7 +169,7 @@
 </li>
 </ul>
 <div class="figwrap"><img src="img/lec7-17.webp" alt="" loading="lazy"></div>
-<div class="warn">Empirical Risk Minimization(경험적 위험 최소화) (ERM)</div>
+<div class="warn">Empirical Risk Minimization (ERM)</div>
 <ul>
 <li>최종 목표 : <b class="k-blue">Expected Risk (전체 데이터 분포의 평균 오차) 최소화</b>
 </li>
@@ -216,7 +216,7 @@
 <ul>
 <li>E<div class="mjx-display"><span class="mjx"><svg focusable="false" aria-hidden="true" style="vertical-align: -0.566ex;" xmlns="http://www.w3.org/2000/svg" width="8.914ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 3940 1000"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mo"><path data-c="2207" d="M46 676Q46 679 51 683H781Q786 679 786 676Q786 674 617 326T444 -26Q439 -33 416 -33T388 -26Q385 -22 216 326T46 676ZM697 596Q697 597 445 597T193 596Q195 591 319 336T445 80L697 596Z"></path></g></g><g data-mml-node="mi" transform="translate(833,0)"><path data-c="1D43F" d="M228 637Q194 637 192 641Q191 643 191 649Q191 673 202 682Q204 683 217 683Q271 680 344 680Q485 680 506 683H518Q524 677 524 674T522 656Q517 641 513 637H475Q406 636 394 628Q387 624 380 600T313 336Q297 271 279 198T252 88L243 52Q243 48 252 48T311 46H328Q360 46 379 47T428 54T478 72T522 106T564 161Q580 191 594 228T611 270Q616 273 628 273H641Q647 264 647 262T627 203T583 83T557 9Q555 4 553 3T537 0T494 -1Q483 -1 418 -1T294 0H116Q32 0 32 10Q32 17 34 24Q39 43 44 45Q48 46 59 46H65Q92 46 125 49Q139 52 144 61Q147 65 216 339T285 628Q285 635 228 637Z"></path></g><g data-mml-node="mi" transform="translate(1514,0)"><text data-variant="italic" transform="scale(1,-1)" font-size="884px" font-family="serif" font-style="italic">ᵢ</text></g><g data-mml-node="mo" transform="translate(2114,0)"><path data-c="28" d="M94 250Q94 319 104 381T127 488T164 576T202 643T244 695T277 729T302 750H315H319Q333 750 333 741Q333 738 316 720T275 667T226 581T184 443T167 250T184 58T225 -81T274 -167T316 -220T333 -241Q333 -250 318 -250H315H302L274 -226Q180 -141 137 -14T94 250Z"></path></g><g data-mml-node="mi" transform="translate(2503,0)"><path data-c="1D44A" d="M436 683Q450 683 486 682T553 680Q604 680 638 681T677 682Q695 682 695 674Q695 670 692 659Q687 641 683 639T661 637Q636 636 621 632T600 624T597 615Q597 603 613 377T629 138L631 141Q633 144 637 151T649 170T666 200T690 241T720 295T759 362Q863 546 877 572T892 604Q892 619 873 628T831 637Q817 637 817 647Q817 650 819 660Q823 676 825 679T839 682Q842 682 856 682T895 682T949 681Q1015 681 1034 683Q1048 683 1048 672Q1048 666 1045 655T1038 640T1028 637Q1006 637 988 631T958 617T939 600T927 584L923 578L754 282Q586 -14 585 -15Q579 -22 561 -22Q546 -22 542 -17Q539 -14 523 229T506 480L494 462Q472 425 366 239Q222 -13 220 -15T215 -19Q210 -22 197 -22Q178 -22 176 -15Q176 -12 154 304T131 622Q129 631 121 633T82 637H58Q51 644 51 648Q52 671 64 683H76Q118 680 176 680Q301 680 313 683H323Q329 677 329 674T327 656Q322 641 318 637H297Q236 634 232 620Q262 160 266 136L501 550L499 587Q496 629 489 632Q483 636 447 637Q428 637 422 639T416 648Q416 650 418 660Q419 664 420 669T421 676T424 680T428 682T436 683Z"></path></g><g data-mml-node="mo" transform="translate(3551,0)"><path data-c="29" d="M60 749L64 750Q69 750 74 750H86L114 726Q208 641 251 514T294 250Q294 182 284 119T261 12T224 -76T186 -143T145 -194T113 -227T90 -246Q87 -249 86 -250H74Q66 -250 63 -250T58 -247T55 -238Q56 -237 66 -225Q221 -64 221 250T66 725Q56 737 55 738Q55 746 60 749Z"></path></g></g></g></svg></span></div> = ∇Loss(W)
 <ul>
-<li>→ 이를 <b class="k-blue">Unbiased Estimate (불편추정)</b> 라고 함.
+<li>→ 이를 <b class="k-blue">Unbiased Estimate</b> 라고 함.
 </li>
 <li><span class="hl">⇒ 개별 Gradient에는 노이즈가 있지만, 평균적으로 전체 Gradient와 같음.</span>
 </li>
@@ -227,7 +227,7 @@
 </ul>
     </section>
     <section class="part">
-    <h2 class="sec-h">SGD의 단점 해결 → Minibatch(미니배치)</h2>
+    <h2 class="sec-h">SGD의 단점 해결 → Minibatch</h2>
     <div class="figwrap"><img src="img/lec7-18.webp" alt="" loading="lazy"></div>
 <ul>
 <li>무작위 n개를 선택해서, 학습에 이용함.
@@ -251,19 +251,19 @@
     </section>
     <section class="part">
     <h2 class="sec-h">Trend algorithms</h2>
-    <h3>RECALL : Momentum(모멘텀) Update</h3>
+    <h3>RECALL : Momentum Update</h3>
 <div class="figwrap"><img src="img/lec7-22.webp" alt="" loading="lazy"></div>
 <ul>
 <li>Typical <span class="mjx"><svg focusable="false" aria-hidden="true" style="vertical-align: -0.439ex;" xmlns="http://www.w3.org/2000/svg" width="1.281ex" height="2.034ex" role="img" focusable="false" viewBox="0 -705 566 899"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D6FD" d="M29 -194Q23 -188 23 -186Q23 -183 102 134T186 465Q208 533 243 584T309 658Q365 705 429 705H431Q493 705 533 667T573 570Q573 465 469 396L482 383Q533 332 533 252Q533 139 448 65T257 -10Q227 -10 203 -2T165 17T143 40T131 59T126 65L62 -188Q60 -194 42 -194H29ZM353 431Q392 431 427 419L432 422Q436 426 439 429T449 439T461 453T472 471T484 495T493 524T501 560Q503 569 503 593Q503 611 502 616Q487 667 426 667Q384 667 347 643T286 582T247 514T224 455Q219 439 186 308T152 168Q151 163 151 147Q151 99 173 68Q204 26 260 26Q302 26 349 51T425 137Q441 171 449 214T457 279Q457 337 422 372Q380 358 347 358H337Q258 358 258 389Q258 396 261 403Q275 431 353 431Z"></path></g></g></g></svg></span> value is 0.9
 <ul>
-<li><u>**maintains a running average**</u>
+<li><u>maintains a running average</u>
 </li>
 </ul>
 </li>
 </ul>
     </section>
     <section class="part">
-    <h2 class="sec-h">RECALL : Nestorov’s method</h2>
+    <h2 class="sec-h">RECALL : Nesterov’s method</h2>
     <div class="figwrap"><img src="img/lec7-23.webp" alt="" loading="lazy"></div>
     </section>
     <section class="part">

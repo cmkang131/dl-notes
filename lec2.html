@@ -27,10 +27,10 @@
 </ul>
     </section>
     <section class="part">
-    <h2 class="sec-h">Perceptron(퍼셉트론)</h2>
+    <h2 class="sec-h">Perceptron</h2>
     <div class="figwrap"><img src="img/lec2-01.webp" alt="" loading="lazy"></div>
 <ul>
-<li>w\*x 의 sum이 임계값을 넘으면, 활성화되는 하나의 함수이다.<br>→ bias를 넘는 것이라고 생각할 수 있을듯.
+<li>w·x 의 합이 임계값을 넘으면, 활성화되는 하나의 함수이다.<br>→ bias를 넘는 것이라고 생각할 수 있을듯.
 </li>
 </ul>
 <div class="figwrap"><img src="img/lec2-02.webp" alt="" loading="lazy"></div>
@@ -41,14 +41,14 @@
 <ul>
 <li>y함수를 위와 같이 둠으로서, perceptron을 <b class="k-blue">soft</b>하게 만들 수 있다.
 </li>
-<li><span class="hl">⇒ 이런 함수를 activation function(활성화 함수)이라고 한다.</span>
+<li><span class="hl">⇒ 이런 함수를 activation function이라고 한다.</span>
 </li>
-<li>affine combination(아핀 결합)<br>- 3x + 7y + 4처럼 + constant가 있는 linear combination 형태
+<li>affine combination<br>- 3x + 7y + 4처럼 + constant가 있는 linear combination 형태
 </li>
 </ul>
     </section>
     <section class="part">
-    <h2 class="sec-h">multi-layer perceptron(다층 퍼셉트론) / Depth</h2>
+    <h2 class="sec-h">multi-layer perceptron / Depth</h2>
     <ul>
 <li>mlp는 depth가 있는 network라고 할 수 있다.
 </li>
@@ -68,19 +68,19 @@
 <ul>
 <li>edge = W, node value = 임계점.<br>→ node value와 weight를 통해서 and / or / nor 등등 모든 boolean을 나타낼 수 있음
 </li>
-<li><b class="k-blue">어떤 boolean function(부울 함수)이든 하나의 hidden layer(은닉층)</b>로 표현할 수 있음.<br>진리표 하나로 표현할 수 있듯이, 한층이면 Truth Table을 모두 표현할 수 있음.
+<li><b class="k-blue">어떤 boolean function이든 하나의 hidden layer</b>로 표현할 수 있음.<br>진리표 하나로 표현할 수 있듯이, 한층이면 Truth Table을 모두 표현할 수 있음.
 </li>
 </ul>
     </section>
     <section class="part">
     <h2 class="sec-h">MLP as a classifier</h2>
     <ul>
-<li>perceptron은 아래와 같은 hyperplane(초평면)으로 볼 수 있다.
+<li>perceptron은 아래와 같은 hyperplane으로 볼 수 있다.
 </li>
 </ul>
 <div class="figwrap"><img src="img/lec2-05.webp" alt="" loading="lazy"></div>
 <ul>
-<li>경계를 넘으면 → 1이고, 넘지 않음녀 0으로 표현됨.
+<li>경계를 넘으면 → 1이고, 넘지 않으면 0으로 표현됨.
 </li>
 </ul>
 <div class="figwrap"><img src="img/lec2-06.webp" alt="" loading="lazy"></div>
@@ -90,7 +90,7 @@
 </ul>
 <div class="figwrap"><img src="img/lec2-07.webp" alt="" loading="lazy"></div>
 <ul>
-<li>각 perceptron이 경계 1개를 만듦 → 5개면 5개면을 만들 수 있음.<br>→ decision boundaries
+<li>각 perceptron이 경계 1개를 만듦 → 5개면 5개의 경계를 만들 수 있음.<br>→ decision boundaries
 </li>
 </ul>
 <div class="figwrap"><img src="img/lec2-08.webp" alt="" loading="lazy"></div>
@@ -126,7 +126,7 @@
     <h2 class="sec-h">Optimal depth</h2>
     <div class="figwrap"><img src="img/lec2-12.webp" alt="" loading="lazy"></div>
 <ul>
-<li>이런 걸, one-layer로 나타내려면 다 점으로 찍어야 함.
+<li>이런 복잡한 경계를 one-hidden-layer로 나타내려면 점으로 다 찍어야 함.
 </li>
 <li>근데, 퍼셉트론을 2층으로 쌓으면 → 이런 경계를 더 쉽게 나타낼 수 있음.
 </li>
