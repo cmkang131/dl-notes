@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to train a NN — 딥러닝 연구 노트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="paper">
+<div class="phead"><a class="to-home" href="index.html">‹ 목차로</a><span class="phead-c">How to train a NN</span><span class="phead-r">딥러닝 연구 노트 · MIT 6.7960</span></div>
+<div class="body">
+<section class="part">
+<p>딥러닝</p>
+<p>= 손실 함수를 최소화 하는 거임</p>
+</section>
+<section class="part">
+<p><b>Gradient Desenct</b>가 쓰임</p>
+<p>최적값이 세타를 찾아야 함.<br>기울기 방향으로 이동하며 → 최소값을 찾음</p>
+<ul class="concept"><li>전역 최소를 보장하지는 않음.</li></ul>
+<div class="figwrap"><img src="images/01-how-to-train-01.jpg" alt="" loading="lazy"></div>
+<p>→ one iteration.</p>
+<p>eta → learning rate 역할을 하고, 한번에 얼마나 변할지를 정함.</p>
+</section>
+<section class="part">
+<div class="concept-title">Stochastic Gradient Descent(SGD)</div>
+<p>데이터가 너무 많아서, 학습하기 힘들 때가 많음</p>
+<p>sub set에만 GD를 하는 것과 전체 데이터에 하는 것과 비슷하다고 가정함.</p>
+<div class="figwrap"><img src="images/01-how-to-train-02.jpg" alt="" loading="lazy"></div>
+<p>이렇게 하면 빠름. + 로컬 minimum에서 벗어날 수 있음<br>좀 불안정함.</p>
+</section>
+<section class="part">
+<div class="concept-title">Momentum</div>
+<p>GD에서 업데이트 방향으로 <b>관성</b>을 가지고 업데이트 하게 됨</p>
+<div class="figwrap"><img src="images/01-how-to-train-03.jpg" alt="" loading="lazy"></div>
+<p>너무 작은 모멘텀 → 최소값에 적당히 천천히 감<br>적당한 모멘텀 → 최소값에 더 빨리 도달 할 수 있음<br>너무 높은 모멘텀 → 최소값을 지나가버림</p>
+</section>
+<section class="part">
+<div class="concept-title">Evolution Strategies</div>
+<div class="figwrap"><img src="images/01-how-to-train-04.jpg" alt="" loading="lazy"></div>
+<div class="figwrap"><img src="images/01-how-to-train-05.jpg" alt="" loading="lazy"></div>
+<p>?? 모르겠어요</p>
+</section>
+<section class="part">
+<div class="concept-title">Gradient clipping</div>
+<div class="figwrap"><img src="images/01-how-to-train-06.jpg" alt="" loading="lazy"></div>
+<p>기울기가 너무 커지면 → 다시 스케일리 하면 됨.</p>
+<div class="figwrap"><img src="images/01-how-to-train-07.jpg" alt="" loading="lazy"></div>
+<p>매개변수의 변화량을 계산 → 그 방향으로 이동(여기까지 같음)<br>but 최대값이 제한됨.</p>
+</section>
+<section class="part">
+<div class="concept-title">Loss function</div>
+<p>연속 / 미분 가능 / 매끄러워야 함.</p>
+<p>EX&gt; ReLU = max(0,z)<br>smooth하지 않음.<br>→ GeLU같은 걸 씀.(smooth함)</p>
+</section>
+<section class="part">
+<div class="concept-title">Computation Graphs</div>
+<div class="figwrap"><img src="images/01-how-to-train-08.jpg" alt="" loading="lazy"></div>
+<p>아래가 input, 위로 갈수록 output</p>
+</section>
+<section class="part">
+<div class="concept-title">Backpropagation</div>
+<div class="figwrap"><img src="images/01-how-to-train-09.jpg" alt="" loading="lazy"></div>
+<p>Computation Graphs에서 세타에 대한 적분을 하기 위한 방법.<br>Chaing rule을 이용해 backward 방향으로 미분값을 얻음</p>
+</section>
+<section class="part">
+<div class="figwrap"><img src="images/01-how-to-train-10.jpg" alt="" loading="lazy"></div>
+<p>forward → backward → update 반복하면 training</p>
+</section>
+<section class="part">
+<p>Linear layer</p>
+<p>Forward = 그냥 f = Wx 곱하면 됨.</p>
+<p>Backprop</p>
+<div class="figwrap"><img src="images/01-how-to-train-11.jpg" alt="" loading="lazy"></div>
+<div class="figwrap"><img src="images/01-how-to-train-12.jpg" alt="" loading="lazy"></div>
+<p>therefore</p>
+<div class="figwrap"><img src="images/01-how-to-train-13.jpg" alt="" loading="lazy"></div>
+<p>loss function을 구하려면</p>
+<div class="figwrap"><img src="images/01-how-to-train-14.jpg" alt="" loading="lazy"></div>
+<p>gout → chainrule 역할</p>
+<div class="figwrap"><img src="images/01-how-to-train-15.jpg" alt="" loading="lazy"></div>
+<div class="figwrap"><img src="images/01-how-to-train-16.jpg" alt="" loading="lazy"></div>
+<p>update 할 때 이거를 쓰게 됨.</p>
+</section>
+<section class="part">
+<div class="concept-title">Differentiable programming</div>
+<p>Easy to optimize<br>ccompositional “block based programming”</p>
+</section>
+</div>
+<div class="pnav"><a href="index.html">‹ 목차로</a><a href="02-arch-grid.html">다음 ›</a></div>
+</div>
+</body>
+</html>
