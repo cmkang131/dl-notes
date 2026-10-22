@@ -53,11 +53,11 @@
 <li>다운 샘플링(차원 낮춤) 도 할 수 있음</li>
 <li>스트라이드 연산</li>
 <li>conv + 풀링 + 다운샘플링</li>
-</ul><div class="figwrap"><img src="images/02-arch-grid-01.jpg" alt="" loading="lazy"></div>
+</ul><div class="figwrap"><img src="images/02-arch-grid-01.jpg" alt="Architectures: Grid — 딥러닝 연구 노트 강의 캡처 1" width="1066" height="630" loading="lazy"></div>
 <ul>
 <li>필터 옆으로 움직이는 걸 5개씩 막 해서, 차원을 줄임</li>
 <li>Dilated filter</li>
-</ul><div class="figwrap"><img src="images/02-arch-grid-02.jpg" alt="" loading="lazy"></div>
+</ul><div class="figwrap"><img src="images/02-arch-grid-02.jpg" alt="Architectures: Grid — 딥러닝 연구 노트 강의 캡처 2" width="1200" height="530" loading="lazy"></div>
 <ul>
 <li>몇개를 0으로 한 큰 필터<br>컨텍스트 창이 늘어난다</li>
 </ul></section>
@@ -65,23 +65,23 @@
 <ul>
 <li>popular CNN Architectures</li>
 <li>Encoder-Decoder Architectures</li>
-</ul><div class="figwrap"><img src="images/02-arch-grid-03.jpg" alt="" loading="lazy"></div>
+</ul><div class="figwrap"><img src="images/02-arch-grid-03.jpg" alt="Architectures: Grid — 딥러닝 연구 노트 강의 캡처 3" width="1200" height="789" loading="lazy"></div>
 <ul>
 <li>Encoder: 원래 이미지 → 낮은 차원의 Z (다운샘플링)<br>Decoder: Z → 이미지 예측 (업샘플링)</li>
 <li>Decoder Output이 Encoder input과 일치하게 하는 게 목표!</li>
 <li>Decoder는 이미지를 만들어 낼 수도 있음</li>
 <li>Image-to-image</li>
-</ul><div class="figwrap"><img src="images/02-arch-grid-04.jpg" alt="" loading="lazy"></div>
+</ul><div class="figwrap"><img src="images/02-arch-grid-04.jpg" alt="Architectures: Grid — 딥러닝 연구 노트 강의 캡처 4" width="1200" height="319" loading="lazy"></div>
 <ul>
 <li>segmentation도 가능!</li>
 <li>(before)차원을 줄이지 않음.(고해상도 유지 → 비용이 커짐)</li>
 <li>after → U-net</li>
-</ul><div class="figwrap"><img src="images/02-arch-grid-05.jpg" alt="" loading="lazy"></div>
+</ul><div class="figwrap"><img src="images/02-arch-grid-05.jpg" alt="Architectures: Grid — 딥러닝 연구 노트 강의 캡처 5" width="1200" height="362" loading="lazy"></div>
 <ul>
 <li>Skip connection이라는 연결이 있음.<br>중간 layer를 건너 뛰는 형태</li>
 <li>저차원 - 특징 정보 / 고차원 - 세부 정보 모두 얻을 수 있는 장점이 있음<br></li>
 <li>ResNet</li>
-</ul><div class="figwrap"><img src="images/02-arch-grid-06.jpg" alt="" loading="lazy"></div>
+</ul><div class="figwrap"><img src="images/02-arch-grid-06.jpg" alt="Architectures: Grid — 딥러닝 연구 노트 강의 캡처 6" width="1200" height="345" loading="lazy"></div>
 <ul>
 <li>모든 layer가 Skip connection으로 연결되어있음<br>layer에서 처리할지 / 스킵할 수 있을지 정할 수 있음<br>→ 즉 최적의 깊이까지 알아서 학습함</li>
 </ul></section>
