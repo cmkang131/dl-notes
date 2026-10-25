@@ -6,7 +6,7 @@ svg{max-width:100%}
 .mjx{display:inline!important}.mjx svg{display:inline-block!important;vertical-align:middle;overflow:visible}
 .mjx-display{margin:.3em 0;overflow-x:auto;overflow-y:hidden;padding:2px 0}
 .mjx-display svg{display:block!important;margin:0 auto}
-.paper{max-width:780px;margin:0 auto;background:#fff;padding:28px 40px 56px}
+.paper{max-width:900px;margin:0 auto;background:#fff;padding:28px 44px 56px}
 .phead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px;color:var(--gray);padding-bottom:10px;margin-bottom:0}
 .phead-c{color:var(--ink);font-weight:700;font-size:13.5px;text-align:center}
 .phead-r{font-size:12.5px;white-space:nowrap}
