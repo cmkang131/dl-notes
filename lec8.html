@@ -42,7 +42,7 @@
 </ul>
 <div class="figwrap"><img src="img/lec8-03.webp" alt="Lec8. Training Part VI 강의 캡처 3" width="1400" height="557" loading="lazy"></div>
 <ul>
-<li>Cross-entropy 또는 D<sub>KL</sub>(d∥y)는 softmax logits에 대해 볼록하며, 입력 특징이 고정된 선형 분류기의 마지막 층 가중치에 대해서도 볼록하다.
+<li>다중분류에서 목표값 d = (d<sub>1</sub>, …, d<sub>C</sub>)가 d<sub>k</sub> ≥ 0, Σ<sub>k=1</sub><sup>C</sup> d<sub>k</sub> = 1을 만족하는 확률벡터이고 출력 y = softmax(z)일 때, categorical cross-entropy L<sub>CE</sub> = −Σ<sub>k=1</sub><sup>C</sup> d<sub>k</sub> log y<sub>k</sub>와 KL divergence D<sub>KL</sub>(d∥y) = Σ<sub>k=1</sub><sup>C</sup> d<sub>k</sub> log(d<sub>k</sub>/y<sub>k</sub>)는 logits z에 대해 볼록하며, 입력 특징이 고정된 선형 분류기의 마지막 층 가중치에 대해서도 볼록하다.
 </li>
 <li>반면 sigmoid 출력에 제곱오차를 적용하면 logits에 대한 손실조차 비볼록할 수 있다.
 </li>
@@ -66,7 +66,7 @@
 </li>
 <li>선형 출력 y = z와 L2 loss L = (1/2)∥y−d∥<sup>2</sup>를 결합하면 ∇<sub>z</sub> L = y−d이다.
 </li>
-<li>또한 softmax 출력 y = softmax(z)와 cross-entropy 또는 D<sub>KL</sub>(d∥y)를 결합하면 ∇<sub>z</sub> L = y−d가 된다.
+<li>또한 y = softmax(z)이고 목표값 d가 d<sub>k</sub> ≥ 0, Σ<sub>k=1</sub><sup>C</sup> d<sub>k</sub> = 1을 만족하는 확률벡터이면, categorical cross-entropy 또는 D<sub>KL</sub>(d∥y)를 사용할 때 ∇<sub>z</sub> L = y−d가 된다. 이는 softmax–loss 조합에서 목표 확률벡터의 성분 합이 1이라는 조건을 이용한 결과이며, 이진분류의 sigmoid–binary cross-entropy 조합에서도 logit에 대한 도함수가 y−d로 단순화된다.
 </li>
 <li>그러나 sigmoid 출력과 L2 loss를 결합하면 ∂L/∂z = (y−d)y(1−y)이므로 일반적으로 같지 않다.
 </li>
@@ -77,7 +77,7 @@
     <section class="part">
     <h2 class="sec-h">The problem of covariate shifts</h2>
     <ul>
-<li>일반적인 covariate shift는 입력 데이터의 분포 P(X)가 달라지는 현상이며, internal covariate shift는 학습 중 앞쪽 층의 가중치가 갱신되면서 뒤쪽 층이 받는 activation의 분포가 변하는 현상을 가리키는 용어다.
+<li>일반적인 covariate shift는 학습 분포와 평가 분포 사이에서 입력의 주변 분포가 P<sub>train</sub>(X) ≠ P<sub>test</sub>(X)로 달라지지만, 공통 입력 영역에서 조건부 레이블 분포 P<sub>train</sub>(Y|X) = P<sub>test</sub>(Y|X)는 유지된다고 가정하는 분포 변화다. 반면 internal covariate shift는 학습 중 앞쪽 층의 파라미터가 갱신되면서 뒤쪽 층이 받는 activation의 분포가 변하는 현상을 가리키는 용어이며, 일반적인 covariate shift와는 구별해야 한다.
 </li>
 <li>Mini-batch마다 표본평균과 표본분산이 다른 것은 표본 추출에 따른 변동일 수도 있으므로 두 개념을 동일시해서는 안 된다.
 </li>
@@ -341,9 +341,7 @@
 </ul>
     </section>
     <section class="part">
-    <div class="figwrap"><img src="img/lec8-29.webp" alt="Lec8. Training Part VI 강의 캡처 29" width="1400" height="575" loading="lazy"></div>
-<ul>
-<li>신경망의 깊이가 증가하면 여러 비선형 변환을 합성할 수 있으므로 특정한 복잡한 함수를 상대적으로 적은 뉴런 또는 파라미터로 효율적으로 표현할 수 있다.
+    \1\n<h3>Depth와 표현력</h3>\n<ul>\n<li>신경망의 깊이가 증가하면 여러 비선형 변환을 합성할 수 있으므로 특정한 복잡한 함수를 상대적으로 적은 뉴런 또는 파라미터로 효율적으로 표현할 수 있다.
 </li>
 <li>따라서 같은 정도의 모델 자원을 사용하더라도 더 깊은 구조가 유리한 함수와 데이터가 존재한다.
 </li>
@@ -354,10 +352,6 @@
     <section class="part">
     <div class="figwrap"><img src="img/lec8-30.webp" alt="Lec8. Training Part VI 강의 캡처 30" width="1400" height="525" loading="lazy"></div>
 <div class="def"><b class="k-blue">Dropout</b> : 학습하면서, 뉴런을 일부러 비활성화 함.</div>
-<ul>
-<li>training을 하면서,
-</li>
-</ul>
 <div class="figwrap"><img src="img/lec8-31.webp" alt="Lec8. Training Part VI 강의 캡처 31" width="1400" height="279" loading="lazy"></div>
 <ul>
 <li>Dropout은 Training 과정에서 미리 설정한 유지 확률 p에 따라 뉴런의 출력을 무작위로 0으로 만드는 정규화 기법이다.
