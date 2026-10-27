@@ -53,14 +53,14 @@
     <h2 class="sec-h">Neural network training algorithm</h2>
     <div class="figwrap"><img src="img/lec6-04.webp" alt="Lec6. Training Part IV 강의 캡처 4" width="1400" height="958" loading="lazy"></div>
 <ul>
-<li>정정: 위 강의 캡처의 bias 갱신식에 표시된 ∇<sub>W<sub>k</sub></sub> Loss는 ∇<sub>b<sub>k</sub></sub> Loss의 오기입니다. 가중치와 bias는 각각 해당 파라미터에 대한 gradient로 갱신해야 하므로, 올바른 갱신식은 W<sub>k</sub> ← W<sub>k</sub> − (η/T)(∇<sub>W<sub>k</sub></sub> Loss)<sup>T</sup>, b<sub>k</sub> ← b<sub>k</sub> − (η/T)(∇<sub>b<sub>k</sub></sub> Loss)<sup>T</sup>입니다.
+<li>정정: 위 강의 캡처의 bias 갱신식에 표시된 ∇<sub>W<sub>k</sub></sub> Loss는 ∇<sub>b<sub>k</sub></sub> Loss의 오기입니다. 가중치와 bias는 각각 해당 파라미터에 대한 gradient로 갱신해야 하므로, 올바른 갱신식은 W<sub>k</sub> ← W<sub>k</sub> − (η/T)(∇<sub>W<sub>k</sub></sub> Loss)<sup>T</sup>, b<sub>k</sub> ← b<sub>k</sub> − (η/T)(∇<sub>b<sub>k</sub></sub> Loss)<sup>T</sup>입니다. 여기서 T는 한 번의 업데이트에 사용한 학습 샘플 수이고, ∇<sub>W<sub>k</sub></sub> Loss와 ∇<sub>b<sub>k</sub></sub> Loss는 T개 샘플의 gradient를 합산한 값이다. 강의 캡처의 행-미분 표기에서는 위첨자 T가 전치 연산을 뜻한다. 이미 평균한 gradient를 사용하거나 파라미터와 같은 형태의 gradient를 정의하는 표준 관례를 사용한다면, 각각 1/T의 중복 적용과 불필요한 전치를 피해야 한다.
 </li>
 </ul>
     </section>
     <section class="part">
     <h2 class="sec-h">Is backprop always right?</h2>
     <ul>
-<li>→ loss function의 최소값을 찾는 게 항상, 최적의 분류를 만들지는 않음.
+<li>Backpropagation은 선택한 미분 가능한 loss function의 gradient를 chain rule로 계산하는 알고리즘이지, 최적의 분류 성능을 보장하는 알고리즘은 아니다. 학습 loss는 정확도와 같은 최종 평가 지표와 일치하지 않을 수 있으며, 학습 데이터에서 loss를 최소화하더라도 overfitting으로 인해 테스트 데이터의 분류 성능이 낮아질 수 있다. 또한 gradient descent가 일반적인 비볼록 신경망 손실함수의 전역 최소점에 도달한다는 보장도 없다. 따라서 loss를 줄이는 것과 최적의 분류 성능을 얻는 것은 구별해야 한다.
 </li>
 </ul>
     </section>
@@ -200,7 +200,7 @@
     <h2 class="sec-h">Derivative-inspired algorithms</h2>
     <h3>Rprop</h3>
 <ul>
-<li>Rprop(Resilient Backpropagation)은 각 파라미터마다 별도의 step size를 관리하고 gradient의 부호를 이용하여 이동 방향을 결정하는 최적화 알고리즘이다. 현재 gradient를 g<sub>i</sub>(k), 이전 gradient를 g<sub>i</sub>(k−1), 현재 step size를 Δ<sub>i</sub>(k)라고 하자. 두 gradient의 곱이 양수이면(g<sub>i</sub>(k)·g<sub>i</sub>(k−1) &gt; 0) 부호가 유지되었으므로 step size를 증가시킨다: Δ<sub>i</sub>(k) = min(α·Δ<sub>i</sub>(k−1), Δ<sub>max</sub>), α &gt; 1. 곱이 음수이면 부호가 반전되었으므로 감소시킨다: Δ<sub>i</sub>(k) = max(β·Δ<sub>i</sub>(k−1), Δ<sub>min</sub>), 0 &lt; β &lt; 1. 기본 이동 방향은 gradient 부호의 반대 방향이며, 별도 처리가 없는 업데이트에서는 −sign(g<sub>i</sub>(k))·Δ<sub>i</sub>(k)만큼 이동한다. 부호 반전 시 이전 업데이트를 되돌리는 backtracking 적용 여부는 변형에 따라 다르다: Rprop+는 되돌림 사용, Rprop−는 미사용, iRprop+는 손실 증가 시 되돌림. 따라서 Rprop의 핵심은 gradient 부호에 따른 파라미터별 step size의 적응적 조절이지, 모든 부호 반전에서 반드시 이전 위치로 돌아가는 것은 아니다.
+<li>Rprop(Resilient Backpropagation)은 각 파라미터마다 별도의 step size를 관리하고 gradient의 부호를 이용하여 이동 방향을 결정하는 최적화 알고리즘이다. 현재 gradient를 g<sub>i</sub>(k), 이전 gradient를 g<sub>i</sub>(k−1), 현재 step size를 Δ<sub>i</sub>(k)라고 하자. 두 gradient의 곱이 양수이면(g<sub>i</sub>(k)·g<sub>i</sub>(k−1) &gt; 0) 부호가 유지되었으므로 step size를 증가시킨다: Δ<sub>i</sub>(k) = min(α·Δ<sub>i</sub>(k−1), Δ<sub>max</sub>), α &gt; 1. 곱이 음수이면 부호가 반전되었으므로 감소시킨다: Δ<sub>i</sub>(k) = max(β·Δ<sub>i</sub>(k−1), Δ<sub>min</sub>), 0 &lt; β &lt; 1. 두 gradient의 곱이 0이면 step size를 유지하여 Δ<sub>i</sub>(k) = Δ<sub>i</sub>(k−1)로 둔다. 기본 이동 방향은 gradient 부호의 반대 방향이며, 별도 처리가 없는 업데이트에서는 −sign(g<sub>i</sub>(k))·Δ<sub>i</sub>(k)만큼 이동한다. 부호 반전 시 이전 업데이트를 되돌리는 backtracking 적용 여부는 변형에 따라 다르다: Rprop+는 되돌림 사용, Rprop−는 미사용, iRprop+는 손실 증가 시 되돌림. 따라서 Rprop의 핵심은 gradient 부호에 따른 파라미터별 step size의 적응적 조절이지, 모든 부호 반전에서 반드시 이전 위치로 돌아가는 것은 아니다.
 </li>
 </ul>
 <div class="figwrap"><img src="img/lec6-21.webp" alt="Lec6. Training Part IV 강의 캡처 21" width="1100" height="632" loading="lazy"></div>
