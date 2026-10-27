@@ -60,13 +60,51 @@
 <li>GD에서 업데이트 방향으로 <b>관성</b>을 가지고 업데이트 하게 됨</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-03.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 3" width="818" height="142" loading="lazy"></div>
 <ul>
+<li>캡처 3의 Momentum 업데이트 식은 다음과 같음.</li>
+<li>θ<sup>t+1</sup> ← θ<sup>t</sup> − η∇f(θ<sup>t</sup>) − α·m<sup>t</sup></li>
+<li>여기서 η는 learning rate, α는 이전 gradient의 영향을 얼마나 유지할지 결정하는 momentum 계수임.</li>
+<li>m<sup>t</sup>는 이전 단계들에서 계산한 gradient에 learning rate를 곱한 값을 누적한 양임. 과거 gradient의 영향은 α에 의해 점차 감소함.</li>
+<li>캡처의 부호에 맞춰 다음과 같이 정의함.</li>
+<li>m<sup>0</sup> = 0</li>
+<li>m<sup>t+1</sup> = η∇f(θ<sup>t</sup>) + α·m<sup>t</sup></li>
+<li>따라서 t ≥ 1에서 다음 관계가 성립함.</li>
+<li>m<sup>t</sup> = θ<sup>t−1</sup> − θ<sup>t</sup></li>
+<li>즉, m<sup>t</sup>는 이전 파라미터 이동량 θ<sup>t</sup> − θ<sup>t−1</sup>의 음수임.</li>
+<li>과거 gradient와 현재 gradient의 방향이 비슷하면, −α·m<sup>t</sup> 항이 현재의 gradient descent 방향에 더해져 관성이 생김.</li>
+<li>주의: 이 캡처의 m<sup>t</sup>는 파라미터의 이동 방향을 그대로 누적하는 velocity와 부호가 반대임. 따라서 일반적인 momentum의 velocity 정의를 그대로 대입하면 캡처 식과 부호가 맞지 않음.</li>
+</ul>
+<ul>
 <li>너무 작은 모멘텀 → 최소값에 적당히 천천히 감<br>적당한 모멘텀 → 최소값에 더 빨리 도달 할 수 있음<br>너무 높은 모멘텀 → 최소값을 지나가버림</li>
 </ul></section>
 <section class="part">
 <div class="concept-title">Evolution Strategies</div>
 <div class="figwrap"><img src="images/01-how-to-train-04.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 4" width="896" height="492" loading="lazy"></div>
 <div class="figwrap"><img src="images/01-how-to-train-05.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 5" width="1070" height="194" loading="lazy"></div>
-
+<ul>
+<li>Evolution Strategies(ES)는 목적함수의 gradient를 직접 계산하지 않고, 파라미터를 여러 방향으로 조금씩 변화시켜 얻은 목적함수 값으로 업데이트 방향을 추정하는 방법임.</li>
+<li>캡처 4처럼 목적함수 J가 계단형으로 불연속인 경우, 대부분의 구간에서 gradient가 0이고 불연속 지점에서는 미분이 정의되지 않음.</li>
+<li>따라서 일반적인 gradient descent로는 유용한 업데이트 방향을 구하기 어려울 수 있음.</li>
+<li>ES에서는 현재 파라미터 θ 주변에 무작위 노이즈를 추가하여 목적함수 값을 평가함.</li>
+<li>캡처 5의 식은 다음과 같음.</li>
+<li>ε<sub>i</sub> ∼ N(0, I)</li>
+<li>s<sub>i</sub> = J(θ + σε<sub>i</sub>)</li>
+<li>θ<sup>k+1</sup> ← θ<sup>k</sup> − η·(1/(σM))·Σ<sub>i=1</sub><sup>M</sup> s<sub>i</sub>·ε<sub>i</sub></li>
+<li>여기서</li>
+<li>ε<sub>i</sub> → 표준 정규분포에서 추출한 무작위 노이즈 벡터</li>
+<li>σ → 파라미터에 추가하는 노이즈의 크기</li>
+<li>M → 평가에 사용하는 노이즈 샘플의 개수</li>
+<li>s<sub>i</sub> → 노이즈를 적용한 파라미터에서 계산한 목적함수 값</li>
+<li>각 노이즈 방향 ε<sub>i</sub>에 목적함수 값 s<sub>i</sub>를 가중치로 곱하고, 여러 샘플의 결과를 평균 내어 gradient 방향을 추정함.</li>
+<li>즉, 다음과 같은 추정량을 사용함.</li>
+<li>ĝ = (1/(σM))·Σ<sub>i=1</sub><sup>M</sup> s<sub>i</sub>·ε<sub>i</sub></li>
+<li>이 추정량은 원래 목적함수 J 자체의 gradient가 아니라, Gaussian noise로 평활화한 목적함수의 gradient를 추정한 것임.</li>
+<li>J<sub>σ</sub>(θ) = E<sub>ε</sub>[J(θ + σε)]</li>
+<li>적절한 조건에서 다음이 성립함.</li>
+<li>∇J<sub>σ</sub>(θ) = (1/σ) E<sub>ε</sub>[J(θ + σε)ε]</li>
+<li>따라서 J가 불연속이더라도 평활화된 목적함수를 기준으로 업데이트 방향을 추정할 수 있음.</li>
+<li>캡처 5의 업데이트는 목적함수 J를 최소화하는 경우를 기준으로 하며, 추정한 gradient의 반대 방향으로 파라미터를 이동함.</li>
+<li>즉, 함수의 미분값을 직접 구하는 대신 여러 perturbation에 대한 평가 결과를 이용하는 gradient-free optimization 방법임.</li>
+</ul>
 </section>
 <section class="part">
 <div class="concept-title">Gradient clipping</div>
@@ -107,6 +145,18 @@
 <div class="figwrap"><img src="images/01-how-to-train-08.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 8" width="660" height="996" loading="lazy"></div>
 <ul>
 <li>아래가 input, 위로 갈수록 output</li>
+<li>Computation Graph에서 하나의 노드 출력이 여러 경로로 분기될 수 있음.</li>
+<li>Forward pass에서는 같은 값이 여러 연산에 입력으로 사용됨.</li>
+<li>Backward pass에서는 각 경로에서 전달되는 gradient의 기여를 모두 합산해야 함.</li>
+<li>예를 들어 스칼라 값 z가 두 경로로 나뉘어 다음과 같이 계산된다고 하자.</li>
+<li>a = h<sub>1</sub>(z)</li>
+<li>b = h<sub>2</sub>(z)</li>
+<li>J = J(a, b)</li>
+<li>이때 chain rule에 의해 z에 대한 gradient는 다음과 같음.</li>
+<li>∂J/∂z = (∂J/∂a)(∂a/∂z) + (∂J/∂b)(∂b/∂z)</li>
+<li>첫 번째 항은 z → a → J 경로를 통한 기여이고, 두 번째 항은 z → b → J 경로를 통한 기여임.</li>
+<li>즉, 하나의 노드에서 여러 경로로 분기되었다면 backward 과정에서는 각 경로에서 돌아온 gradient를 더한 뒤 이전 노드로 전달함.</li>
+<li>경로마다 chain rule을 적용하고, 같은 노드로 모이는 gradient는 합산하는 것이 핵심임.</li>
 </ul></section>
 <section class="part">
 <div class="concept-title">Backpropagation</div>
@@ -140,10 +190,22 @@
 <li>therefore</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-13.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 13" width="386" height="108" loading="lazy"></div>
 <ul>
-<li>loss function을 구하려면</li>
+<li>※ 표기 주의: 캡처 13의 g<sub>in</sub> = g<sub>out</sub> · W는 입력과 출력의 gradient를 행벡터(row vector)로 표현한 식임.</li>
+<li>반면 위에서 정의한 forward 식 f = Wx + b는 입력 x와 출력 f를 열벡터(column vector)로 두는 관례임.</li>
+<li>이 열벡터 관례에서는 다음과 같이 계산함.</li>
+<li>g<sub>out</sub> = ∂J/∂f</li>
+<li>g<sub>in</sub> = ∂J/∂x = Wᵀ g<sub>out</sub></li>
+<li>즉, 입력 쪽 gradient를 계산할 때 weight matrix W의 전치행렬을 곱함.</li>
+<li>캡처의 g<sub>in</sub> = g<sub>out</sub> · W와 본문의 g<sub>in</sub> = Wᵀ g<sub>out</sub>은 gradient를 행벡터로 쓰는지 열벡터로 쓰는지에 따른 표기 차이이며, 같은 chain rule을 나타냄.</li>
+<li>여기서는 loss function 자체를 새로 구하는 것이 아님.</li>
+<li>Forward pass에서 계산된 손실 J를 기준으로, backward pass에서는 손실의 gradient를 출력 쪽에서 입력 쪽으로 전파함.</li>
+<li>Linear layer에서는 출력 f에 대한 손실의 gradient g<sub>out</sub> = ∂J/∂f를 전달받고, chain rule을 이용해 입력 x에 대한 gradient를 계산함.</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-14.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 14" width="934" height="172" loading="lazy"></div>
 <ul>
-<li>gout → chainrule 역할</li>
+<li>g<sub>out</sub>은 현재 layer의 출력 f에 대한 손실 J의 gradient임.</li>
+<li>뒤쪽 layer에서 전달된 이 gradient에 현재 layer의 local derivative를 결합하는 것이 chain rule의 핵심임.</li>
+<li>이를 통해 입력에 대한 gradient g<sub>in</sub> = ∂J/∂x뿐 아니라 weight W와 bias b에 대한 gradient도 계산함.</li>
+<li>즉, g<sub>out</sub>은 chain rule 자체가 아니라, chain rule을 적용할 때 출력 쪽에서 전달받는 gradient임.</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-15.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 15" width="878" height="294" loading="lazy"></div>
 <div class="figwrap"><img src="images/01-how-to-train-16.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 16" width="606" height="152" loading="lazy"></div>
 <ul>
@@ -155,7 +217,12 @@
 <section class="part">
 <div class="concept-title">Differentiable programming</div>
 <ul>
-<li>Easy to optimize<br>compositional “block based programming”</li>
+<li>미분 가능한 연산들을 조합해 프로그램을 구성하면, automatic differentiation을 통해 gradient를 계산할 수 있음.</li>
+<li>따라서 gradient-based optimization을 적용하기 쉬워질 수 있음.</li>
+<li>하지만 미분 가능하다는 것이 최적화 자체가 항상 쉽다는 뜻은 아님.</li>
+<li>실제 최적화 난이도는 손실 함수의 형태, 초기화, learning rate 등에 따라 달라짐.</li>
+<li>특히 비볼록(non-convex) 손실 함수에서는 local minimum이나 saddle point 등의 문제가 존재할 수 있으며, 전역 최소값에 도달하는 것은 보장되지 않음.</li>
+<li>compositional “block based programming”</li>
 </ul></section>
 </div>
 <div class="pnav"><a href="index.html">‹ 목차로</a><a href="02-arch-grid.html">다음 ›</a></div>

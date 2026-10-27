@@ -43,8 +43,8 @@
 <ul>
 <li>Perceptron에서 사용하는 step 함수도 activation function(활성화함수)의 일종이며, sigmoid 함수 역시 활성화함수의 한 예임. 입력의 가중합과 bias를 z = w·x + b로 두면, sigmoid 활성화함수를 사용한 출력은 y = σ(z) = 1/(1 + e<sup>−z</sup>)로 표현됨. Step 함수는 임계값을 기준으로 출력이 불연속적으로 바뀌지만, sigmoid 함수는 연속적인 값을 출력하므로 perceptron의 출력을 보다 soft하게 만들 수 있음. 즉, 활성화함수라는 용어는 sigmoid에만 해당하는 것이 아니라 step 함수 등에도 적용됨.
 </li>
-<li>affine combination<br>- 3x + 7y + 4처럼 + constant가 있는 linear combination 형태
-</li>
+<li>affine combination<br>점(또는 벡터)들의 linear combination 중 계수의 합이 1인 형태를 의미함. 예를 들어 0.3x + 0.7y는 계수의 합이 1이므로 affine combination임.</li>
+<li>반면 3x + 7y + 4처럼 입력의 가중합에 constant(bias)가 더해진 형태는 affine function/transformation에 해당함. 일반적으로 f(x) = Wx + b로 표현하며, affine combination과는 구분해야 함.</li>
 </ul>
     </section>
     <section class="part">
@@ -102,19 +102,22 @@
 <div class="col" style="flex:1">
 <div class="figwrap"><img src="img/lec2-09.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 9" width="1400" height="858" loading="lazy"></div>
 <ul>
-<li>뉴런의 합이 사실 주변값이랑 큰 차이가 안 남.
-</li>
+<li>각 뉴런이 다각형의 한 변을 기준으로 안쪽 반평면에 해당하는지를 0 또는 1로 출력한다고 보면, 뉴런의 합은 다각형 내부에서 변의 수 N과 같아짐.</li>
+<li>다만 경계 바로 바깥에서는 내부와 뉴런의 합이 큰 차이가 나지 않음. 캡처 9의 오각형(N = 5)에서는 내부 합이 5이고, 바깥쪽은 위치에 따라 바로 인접한 영역에서 4, 그 밖에서 3, 먼 영역에서 2로 달라짐. 즉, 외부의 합이 항상 일정한 값으로 나오는 것은 아님.</li>
 </ul>
 </div>
 <div class="col" style="flex:1">
 <div class="figwrap"><img src="img/lec2-10.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 10" width="932" height="1030" loading="lazy"></div>
 <ul>
-<li>size를 늘리면(도형 변이 늘어남) → 이걸 해결할 수 있음.(원모양)<br>안은 n<br>밖은 n/2 값으로 수렴하게 됨.
-</li>
+<li>변의 수 N을 늘리면 → 다각형의 경계가 원에 가까워지고, 내부의 뉴런 합 N과 외부의 합 사이의 차이도 외부 위치에 따라 상대적으로 커질 수 있음. 이를 통해 원에 가까운 영역을 더 정밀하게 근사할 수 있음.</li>
+<li>단, 경계 바로 바깥에서는 여전히 내부와의 차이가 작을 수 있으며, 외부 뉴런의 합이 일률적으로 N/2로 수렴하는 것은 아님.</li>
 </ul>
 </div>
 </div>
 <div class="figwrap"><img src="img/lec2-11.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 11" width="1400" height="507" loading="lazy"></div>
+<ul>
+<li>캡처 11의 판정식 Σ<sub>i=1</sub><sup>KN</sup> y<sub>i</sub> − N/2 ≥ 0은 K개의 다각형을 결합하여 영역을 판정하는 별도의 구성에서 제시된 식임. 여기서 N/2는 해당 결합 구성의 판정 임계값(threshold)이며, 앞서 설명한 단일 N각형의 외부 뉴런 합이 N/2로 수렴한다는 의미는 아님.</li>
+</ul>
 <ul>
 <li>UAT(Universal Approximation Theorem)에 따르면, 콤팩트 집합 K 위의 임의의 연속함수 f에 대해, 연속인 비다항식 활성화함수를 사용하는 <b class="k-blue">one-hidden-layer MLP</b>는 충분한 수의 hidden unit을 사용하여 임의의 ε &gt; 0에 대해 ∥f − f̂∥<sub>∞</sub> &lt; ε를 만족하는 근사 함수 f̂를 존재하게 할 수 있음. 이는 모든 <b class="k-blue">classification</b> 문제를 반드시 '해결'한다는 의미가 아니라 함수 근사가 가능하다는 존재 정리임. 또한 이러한 근사를 실현하는 가중치를 실제 학습 과정에서 반드시 찾을 수 있다는 보장은 없으며, 결정 경계 근처에서는 작은 근사 오차로도 오분류가 발생할 수 있음.
 </li>
