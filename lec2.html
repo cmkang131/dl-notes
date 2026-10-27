@@ -31,7 +31,8 @@
     <h2 class="sec-h">Perceptron</h2>
     <div class="figwrap"><img src="img/lec2-01.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 1" width="1400" height="449" loading="lazy"></div>
 <ul>
-<li>w·x 의 합이 임계값을 넘으면, 활성화되는 하나의 함수이다.<br>→ bias를 넘는 것이라고 생각할 수 있을듯.
+<li>※ 캡처 1의 입력 표기에서 두 번째 X₁은 오기이며, X₂로 표기하는 것이 맞음.</li>
+<li>Perceptron은 입력의 가중합 w·x를 임계값 θ와 비교하여, w·x &gt; θ이면 활성화되는 구조임. 여기서 θ는 가중합과 비교되는 기준값이며, bias 자체를 넘는다는 의미는 아님. bias를 사용하는 표현에서는 w·x + b &gt; 0 ⟺ w·x &gt; −b이므로 θ = −b의 관계가 성립함. 캡처 1의 w·x ≥ T라는 표기도 b = −T로 두면 w·x + b ≥ 0으로 동일하게 표현할 수 있음. 단, &gt;와 ≥는 임계값에서의 포함 여부가 다르므로 각각 구분해야 함.
 </li>
 </ul>
 <div class="figwrap"><img src="img/lec2-02.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 2" width="376" height="410" loading="lazy"></div>
@@ -40,9 +41,7 @@
     <h2 class="sec-h">Logistic</h2>
     <div class="figwrap"><img src="img/lec2-03.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 3" width="380" height="136" loading="lazy"></div>
 <ul>
-<li>y함수를 위와 같이 둠으로서, perceptron을 <b class="k-blue">soft</b>하게 만들 수 있다.
-</li>
-<li><span class="hl">⇒ 이런 함수를 activation function이라고 한다.</span>
+<li>Perceptron에서 사용하는 step 함수도 activation function(활성화함수)의 일종이며, sigmoid 함수 역시 활성화함수의 한 예임. 입력의 가중합과 bias를 z = w·x + b로 두면, sigmoid 활성화함수를 사용한 출력은 y = σ(z) = 1/(1 + e<sup>−z</sup>)로 표현됨. Step 함수는 임계값을 기준으로 출력이 불연속적으로 바뀌지만, sigmoid 함수는 연속적인 값을 출력하므로 perceptron의 출력을 보다 soft하게 만들 수 있음. 즉, 활성화함수라는 용어는 sigmoid에만 해당하는 것이 아니라 step 함수 등에도 적용됨.
 </li>
 <li>affine combination<br>- 3x + 7y + 4처럼 + constant가 있는 linear combination 형태
 </li>
@@ -67,7 +66,7 @@
 </ul>
 <div class="figwrap"><img src="img/lec2-04.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 4" width="1180" height="828" loading="lazy"></div>
 <ul>
-<li>edge = W, node value = 임계점.<br>→ node value와 weight를 통해서 and / or / nor 등등 모든 boolean을 나타낼 수 있음
+<li>Edge에는 weight(W)가 부여되고, node에서는 입력의 가중합을 임계값 θ와 비교함. θ는 활성화 여부를 결정하는 기준값이며, bias와는 θ = −b의 관계가 있음. Weight와 bias(또는 임계값 θ)를 적절히 설정하면 AND / OR / NOR 등의 Boolean 함수를 표현할 수 있음. 다만 단일 perceptron이 모든 Boolean 함수를 표현할 수 있는 것은 아니며, 선형적으로 분리할 수 없는 Boolean 함수는 단일 perceptron만으로 표현할 수 없음.
 </li>
 <li><b class="k-blue">어떤 boolean function이든 하나의 hidden layer</b>로 표현할 수 있음.<br>진리표 하나로 표현할 수 있듯이, 한층이면 Truth Table을 모두 표현할 수 있음.
 </li>
@@ -117,7 +116,7 @@
 </div>
 <div class="figwrap"><img src="img/lec2-11.webp" alt="Lec2. Neural Nets as Universal Approximators 강의 캡처 11" width="1400" height="507" loading="lazy"></div>
 <ul>
-<li>이런 원들을 합치면 → 어떤 분류 문제도 해결할 수 있음.<br>즉, <b class="k-blue">one-hidden-layer MLP</b>도 <b class="k-blue">classification</b>문제를 해결할 수 있음!
+<li>UAT(Universal Approximation Theorem)에 따르면, 콤팩트 집합 K 위의 임의의 연속함수 f에 대해, 연속인 비다항식 활성화함수를 사용하는 <b class="k-blue">one-hidden-layer MLP</b>는 충분한 수의 hidden unit을 사용하여 임의의 ε &gt; 0에 대해 ∥f − f̂∥<sub>∞</sub> &lt; ε를 만족하는 근사 함수 f̂를 존재하게 할 수 있음. 이는 모든 <b class="k-blue">classification</b> 문제를 반드시 '해결'한다는 의미가 아니라 함수 근사가 가능하다는 존재 정리임. 또한 이러한 근사를 실현하는 가중치를 실제 학습 과정에서 반드시 찾을 수 있다는 보장은 없으며, 결정 경계 근처에서는 작은 근사 오차로도 오분류가 발생할 수 있음.
 </li>
 <li>hidden-layer를 늘리면, 이런 분류를 더욱 효율적으로 할 수도 있음.
 </li>

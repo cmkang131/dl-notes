@@ -23,18 +23,33 @@
 <section class="part">
 <ul>
 <li><b>Gradient Descent</b>가 쓰임</li>
-<li>최적인 세타를 찾아야 함.<br>기울기 방향으로 이동하며 → 최소값을 찾음</li>
-</ul><ul class="concept"><li>전역 최소를 보장하지는 않음.</li></ul>
+<li>최적인 세타를 찾아야 함.</li>
+<li>기울기의 반대 방향으로 이동하며 → 손실 함수의 최소값을 찾음.</li>
+<li>θ ← θ − η∇L(θ)</li>
+<li>∇L(θ) → 손실 함수가 가장 빠르게 증가하는 방향</li>
+<li>−∇L(θ) → 손실 함수가 가장 빠르게 감소하는 방향</li>
+<li>η → learning rate (한 번에 이동하는 크기 조절)</li>
+<li>전역 최소값에 도달하는 것은 보장되지 않음.</li>
+</ul>
 <div class="figwrap"><img src="images/01-how-to-train-01.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 1" width="552" height="126" loading="lazy"></div>
 <ul>
 <li>→ one iteration.</li>
-<li>eta → learning rate 역할을 하고, 한번에 얼마나 변할지를 정함.</li>
 </ul></section>
 <section class="part">
 <div class="concept-title">Stochastic Gradient Descent(SGD)</div>
 <ul>
 <li>데이터가 너무 많아서, 학습하기 힘들 때가 많음</li>
-<li>sub set에만 GD를 하는 것과 전체 데이터에 하는 것과 비슷하다고 가정함.</li>
+<li>전체 데이터 대신 일부 데이터를 무작위로 뽑아서 gradient를 계산함.</li>
+<li>엄밀한 SGD → 샘플 1개로 gradient 계산</li>
+<li>Mini-batch GD → 여러 샘플로 이루어진 작은 batch로 gradient 계산</li>
+<li>전체 데이터 N개에 대한 평균 손실이 L(θ) = (1/N) Σᵢ₌₁ᴺ ℓᵢ(θ) 이면,</li>
+<li>전체 gradient: g = (1/N) Σᵢ₌₁ᴺ ∇ℓᵢ(θ)</li>
+<li>Mini-batch gradient: g<sub>B</sub> = (1/|B|) Σᵢ∈B ∇ℓᵢ(θ)</li>
+<li>무작위로 균등 추출하면 → E[g<sub>B</sub>] = g</li>
+<li>즉, mini-batch gradient는 전체 gradient의 불편추정량(unbiased estimator)임.</li>
+<li>매번 똑같거나 비슷하다고 가정하는 게 아니라, 기댓값이 같다는 뜻임.</li>
+<li>일부 데이터만 계산하므로 한 번의 업데이트 비용이 작음.</li>
+<li>하지만 sampling에 따른 분산이 있어서 → 업데이트 방향이 흔들리고 학습이 불안정할 수 있음.</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-02.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 2" width="1106" height="152" loading="lazy"></div>
 <ul>
 <li>이렇게 하면 빠름. + 로컬 minimum에서 벗어날 수 있음<br>좀 불안정함.</li>
@@ -57,16 +72,35 @@
 <div class="concept-title">Gradient clipping</div>
 <div class="figwrap"><img src="images/01-how-to-train-06.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 6" width="864" height="444" loading="lazy"></div>
 <ul>
-<li>기울기가 너무 커지면 → 다시 스케일링하면 됨.</li>
+<li>기울기가 너무 커지면 → 기울기 자체를 제한함.</li>
+<li>매개변수 변화량이 아니라 gradient가 1차적인 clipping 대상임.</li>
+<li>g = ∇L(θ), c &gt; 0 (clipping threshold)</li>
+<li><b>Norm clipping</b></li>
+<li>||g|| &gt; c이면 전체 gradient를 재조정함.</li>
+<li>g<sub>clip</sub> = g · min(1, c/||g||)</li>
+<li>→ gradient의 norm을 최대 c로 제한함.</li>
+<li>→ 원래 gradient의 방향은 유지됨.</li>
+<li><b>Value clipping</b></li>
+<li>각 gradient 성분을 [-c, c] 범위로 제한함.</li>
+<li>(g<sub>clip</sub>)ᵢ = max(-c, min(c, gᵢ))</li>
+<li>→ 각 성분을 개별적으로 잘라냄.</li>
+<li>→ 전체 gradient의 방향은 바뀔 수 있음.</li>
+<li>Clipping한 gradient로 매개변수를 업데이트함.</li>
+<li>θ ← θ − ηg<sub>clip</sub></li>
+<li>즉, 너무 큰 gradient 때문에 업데이트가 과도해지는 것을 방지하는 방법임.</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-07.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 7" width="1200" height="203" loading="lazy"></div>
-<ul>
-<li>매개변수의 변화량을 계산 → 그 방향으로 이동(여기까지 같음)<br>but 최대값이 제한됨.</li>
-</ul></section>
+</section>
 <section class="part">
 <div class="concept-title">Loss function</div>
 <ul>
-<li>연속 / 미분 가능 / 매끄러워야 함.</li>
-<li>EX&gt; ReLU = max(0,z)<br>smooth하지 않음.<br>→ GeLU같은 걸 씀.(smooth함)</li>
+<li>손실 함수를 최소화하기 위해 gradient를 계산함.</li>
+<li>전 구간에서 미분 가능하거나 smooth할 필요는 없음.</li>
+<li>대부분의 점에서 미분 가능하면 gradient 기반 학습이 가능하고, 미분 불가능한 점에서도 부분기울기(subgradient)가 정의되면 이를 이용할 수 있음.</li>
+<li>EX&gt; ReLU = max(0, z)</li>
+<li>ReLU는 손실 함수가 아니라 활성화 함수(activation function)임.</li>
+<li>z = 0에서 미분 불가능하지만, 해당 지점에서 사용할 기울기 값을 정해 학습할 수 있음.</li>
+<li>GELU는 smooth한 활성화 함수임.</li>
+<li>ReLU 대신 GELU를 쓰기도 하지만, 선택 이유가 smooth함 하나만은 아님.</li>
 </ul></section>
 <section class="part">
 <div class="concept-title">Computation Graphs</div>
@@ -78,6 +112,9 @@
 <div class="concept-title">Backpropagation</div>
 <div class="figwrap"><img src="images/01-how-to-train-09.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 9" width="770" height="430" loading="lazy"></div>
 <ul>
+<li>정정: 슬라이드의 연쇄법칙 식에서 끝에서 두 번째 인자인 ∂x₂/x₁은 분모의 ∂가 누락된 오기입니다. 올바른 표기는 ∂x₂/∂x₁입니다.</li>
+</ul>
+<ul>
 <li>Computation Graphs에서 세타에 대한 미분을 계산하기 위한 방법.<br>Chain rule을 이용해 backward 방향으로 미분값을 얻음</li>
 </ul></section>
 <section class="part">
@@ -88,7 +125,14 @@
 <section class="part">
 <ul>
 <li>Linear layer</li>
-<li>Forward = 그냥 f = Wx 곱하면 됨.</li>
+<li>Forward → f = Wx + b</li>
+<li>W → weight matrix</li>
+<li>x → input vector</li>
+<li>b → bias vector</li>
+<li>f → output vector</li>
+<li>입력에 W를 곱하고 bias b를 더함.</li>
+<li>bias까지 포함하면 수학적으로는 affine transformation임.</li>
+<li>b = 0이면 f = Wx가 됨.</li>
 <li>Backprop</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-11.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 11" width="898" height="184" loading="lazy"></div>
 <div class="figwrap"><img src="images/01-how-to-train-12.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 12" width="878" height="178" loading="lazy"></div>
@@ -102,6 +146,9 @@
 <li>gout → chainrule 역할</li>
 </ul><div class="figwrap"><img src="images/01-how-to-train-15.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 15" width="878" height="294" loading="lazy"></div>
 <div class="figwrap"><img src="images/01-how-to-train-16.jpg" alt="How to train a NN — 딥러닝 연구 노트 강의 캡처 16" width="606" height="152" loading="lazy"></div>
+<ul>
+<li>※ 정정: 캡처 15의 성분식 ∂J/∂Wᵢⱼ = (g<sub>out</sub>)ᵢ(x<sub>in</sub>)ⱼ가 기준임. 행렬로는 ∂J/∂W = g<sub>out</sub> x<sub>in</sub>ᵀ (외적)이 맞음. 캡처 16의 x<sub>in</sub> · g<sub>out</sub>는 일반적인 행렬곱 순서로 해석하면 안 됨.</li>
+</ul>
 <ul>
 <li>update 할 때 위 식을 쓰게 됨.</li>
 </ul></section>
